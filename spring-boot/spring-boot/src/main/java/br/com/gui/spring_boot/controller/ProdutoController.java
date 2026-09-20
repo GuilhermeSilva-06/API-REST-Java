@@ -36,4 +36,10 @@ public class ProdutoController {
     public ProdutoEntity updateProduct(@PathVariable Integer id ,@RequestBody ProdutoDto produtoDto){
         return produtosService.atualizarProduto(produtoDto, id);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable Integer id){
+        produtosService.removerProduto(id);
+    }
 }

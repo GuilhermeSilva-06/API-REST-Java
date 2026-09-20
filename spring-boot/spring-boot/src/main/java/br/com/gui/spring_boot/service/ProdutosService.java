@@ -2,6 +2,7 @@ package br.com.gui.spring_boot.service;
 
 import br.com.gui.spring_boot.database.modal.ProdutoEntity;
 import br.com.gui.spring_boot.dto.ProdutoDto;
+import br.com.gui.spring_boot.exception.NotFoundExcepiton;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -59,17 +60,21 @@ public class ProdutosService {
         return novoProduto;
     }
 
-    public ProdutoEntity atualizarProduto(ProdutoDto produtoDto, Integer id){
+    public ProdutoEntity atualizarProduto(ProdutoDto produtoDto, Integer id) throws NotFoundExcepiton {
 
         ProdutoEntity produto = PRODUTOS.stream()
                 .filter(p -> p.getId().equals(id))
                 .findAny()
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new NotFoundExcepiton("Produto não encontrado"));
 
             produto.setNome(produtoDto.getNome());
             produto.setPreco(produtoDto.getPreco());
             produto.setQuantidade(produtoDto.getQuantidade());
 
         return produto;
+    }
+
+    public void removerProduto(Integer id){
+        PRODUTOS.removeIf(p -> p.getId().equals(id));
     }
 }
